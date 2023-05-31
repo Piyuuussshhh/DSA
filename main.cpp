@@ -23,7 +23,7 @@ int main() {
     switch (choice) {
     case 1: {
         int listCreationChoice;
-        std::cout << "---------------------------Linked List---------------------------" << std::endl;
+        std::cout << "---------------------------LINKED LIST---------------------------" << std::endl;
         std::cout << "1. Create linked list with array." << std::endl
                   << "2. Create linked list element-wise." << std:: endl;
         std::cout << "Enter choice: ";
@@ -32,7 +32,7 @@ int main() {
         switch (listCreationChoice) {
         case 1: {
             int sizeOfArray;
-            std::cout << "Enter array size: " << std::endl;
+            std::cout << "Enter array size: ";
             std::cin >> sizeOfArray;
 
             int *arr = new int[sizeOfArray];
@@ -43,7 +43,8 @@ int main() {
             }
 
             ListNode<int> *head = createLinkedListFromArray<int>(arr, sizeOfArray);
-            displayLinkedList<int>(head);
+            displayLinkedList<int>(head); std::cout << std::endl;
+            recursiveDisplayLL<int>(head); std::cout << std::endl;
 
             break;
         }
