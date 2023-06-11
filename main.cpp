@@ -1,62 +1,64 @@
 #include <iostream>
 
 #include "data_structures/LinkedList/listNode.h"
+#include "functions.h"
+
+class InvalidOptionException {};
 
 int main() {
-    // ListNode<int> *head = new ListNode<int>(10);
-    // head -> setNext(new ListNode<int>(12));
-    // head -> getNext() -> setNext(new ListNode<int>(14));
-    // head -> getNext() -> getNext() -> setNext(new ListNode<int>(16));
-
-    // for (auto i = head; i != NULL; i = i -> getNext()) {
-    //     std::cout << i -> getData() << " ";
-    // } std::cout << std::endl;
-
-    std::cout << "---------------------------MENU---------------------------" << std::endl;
-    std::cout << "1. Linked List" << std::endl;
-
-    int choice;
-    std::cout << "Enter choice: ";
-    std::cin >> choice;
-    std::cout << std::endl;
-
-    switch (choice) {
-    case 1: {
-        int listCreationChoice;
-        std::cout << "---------------------------LINKED LIST---------------------------" << std::endl;
-        std::cout << "1. Create linked list with array." << std::endl
-                  << "2. Create linked list element-wise." << std:: endl;
-        std::cout << "Enter choice: ";
-        std::cin >> listCreationChoice;
-
-        switch (listCreationChoice) {
-        case 1: {
-            int sizeOfArray;
-            std::cout << "Enter array size: ";
-            std::cin >> sizeOfArray;
-
-            int *arr = new int[sizeOfArray];
-
-            for (int i = 0; i < sizeOfArray; i++) {
-                std::cout << "Enter element " << i + 1 << ": ";
-                std::cin >> arr[i];
+    const int choice = mainMenu();
+    const int dataTypeChoice = chooseDataType();
+    char repeat = 'y';
+    do {
+        switch (choice) {
+            case 1: {
+                switch (dataTypeChoice) {
+                    case 1: {
+                        const int &listChoice = listCreationMenu();
+                        ListNode<int> *head = createLinkedList<int>(listChoice);
+                        const int &operation = linkedListMenu();
+                        linkedListOperations<int>(operation, head);
+                        break;
+                    }
+                    case 2: {
+                        const int &listChoice = listCreationMenu();
+                        ListNode<float> *head = createLinkedList<float>(listChoice);
+                        const int &operation = linkedListMenu();
+                        linkedListOperations<float>(operation, head);
+                        break;
+                    }
+                    case 3: {
+                        const int &listChoice = listCreationMenu();
+                        ListNode<double> *head = createLinkedList<double>(listChoice);
+                        const int &operation = linkedListMenu();
+                        linkedListOperations<double>(operation, head);
+                        break;
+                    }
+                    case 4: {
+                        const int &listChoice = listCreationMenu();
+                        ListNode<std::string> *head = createLinkedList<std::string>(listChoice);
+                        const int &operation = linkedListMenu();
+                        linkedListOperations<std::string>(operation, head);
+                        break;
+                    }
+                    default:
+                        // throw InvalidOptionException();
+                        std::cout << "[ERROR] Invalid option!" << std::endl;
+                        break;
+                }
+            break;
             }
 
-            ListNode<int> *head = createLinkedListFromArray<int>(arr, sizeOfArray);
-            displayLinkedList<int>(head); std::cout << std::endl;
-            recursiveDisplayLL<int>(head); std::cout << std::endl;
-
-            break;
+            default: {
+                // throw InvalidOptionException();
+                std::cout << "[ERROR] Invalid option!" << std::endl;
+                break;
+            }
         }
 
-        default:
-            break;
-        }
+        std::cout << "Do you want to repeat (y/n): ";
+        std::cin >> repeat;
+        std::cout << "------------------------------------------------------" << std::endl;
+    } while (repeat == 'y' || repeat == 'Y');
 
-        break;
-    }
-
-    default:
-        break;
-    }
 }

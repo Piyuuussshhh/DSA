@@ -35,7 +35,7 @@ ListNode<T>* ListNode<T>::getNext() {
 }
 
 template <class T>
-void ListNode<T>::setNext(ListNode *node) {
+void ListNode<T>::setNext(ListNode<T> *node) {
     this -> next = node;
 }
 
@@ -48,7 +48,7 @@ void displayLinkedList(ListNode<T> *head) {
     while (temp != nullptr) {
         std::cout << temp -> getData() << " ";
         temp = temp -> getNext();
-    }
+    } std::cout << std::endl;
 }
 
 // Prints a linked list recursively.                           Time Complexity: O(n), Space Complexity: -
@@ -216,31 +216,80 @@ template <class T>
 ListNode<T>* searchLinkedListFor(T element, ListNode<T> *head) {
     ListNode<T> *temp = head;
 
+    int index = 0;
     while (temp) {
         if (temp -> getData() == element) {
+            std::cout << "Element found at index " << index << "." << std::endl;
             return temp;
         }
-        temp = temp - getNext();
+        temp = temp -> getNext();
+        index++;
     }
 
     return nullptr;
 }
 
-// Optimised Move to Head search algorithm implementation for linked list.
+// Optimised Move to Head search algorithm implementation for linked list.      Time Complexity: O(n) && O(1) in some cases, Space Complexity: O(1).
 // ? If you search for an element twice, the time complexity to search it becomes O(1). This is done
 // ? by replacing the placing the element at the head of the linked list, so accessing it takes constant time.
 template<class T>
 ListNode<T>* optimisedSearch(T element, ListNode<T> *head) {
     ListNode<T> *temp = head, *prev = nullptr;
 
-    while (temp -> getData() != element) {
+    int index = 0;
+    while (temp) {
+        if (temp -> getData() == element) {
+            std::cout << "Element found at index " << index << "." << std::endl;
+            prev -> setNext(temp -> getNext());
+            temp -> setNext(head);
+            head = temp;
+            return head;
+        }
         prev = temp;
-        temp = temp -> next;
+        temp = temp -> getNext();
+        index++;
     }
 
-    prev -> setNext(temp -> setNext());
-    temp -> setNext(head);
-    head = temp;
+    if (!temp) {
+        return nullptr;
+    }
 
-    return temp;
+    return head;
 }
+
+// Inserts a new node into the linked list. By default, if no index is provided, inserts element at the end of the linked list.
+// ? Inserting new node before head: Time Complexity: O(1), Space Complexity: O(1).
+// ? Inserting new node in between head and last node: Time Complexity: O(n), Space Complexity: O(1).
+// ? Inserting new node after last node: Time Complexity: O(1), Space Complexity: O(1).
+template <class T>
+void insert(ListNode<T> *head, T element, int index = -1) {
+    ListNode<T> *newNode = new ListNode<T>(element);
+
+    if ((index < 0 && index != -1) || index > countNodes(head)) {
+        std::cout << "[ERROR] Incorrect index position!" << std::endl;
+        return;
+    }
+
+    if (index == 0) {
+        newNode -> setNext(head);
+        head = newNode;
+    } else if (index == -1) {
+        ListNode<T> *prev = head;
+
+        while (prev -> getNext()) {
+            prev = prev -> getNext();
+        }
+
+        prev -> setNext(newNode);
+    } else {
+        ListNode<T> *prev = head;
+
+        for (int i = 0; i < index - 1; i++) {
+            prev = prev -> getNext();
+        }
+
+        newNode -> setNext(prev -> getNext());
+        prev -> setNext(newNode);
+    }
+}
+
