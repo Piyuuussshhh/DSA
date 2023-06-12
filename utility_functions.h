@@ -1,9 +1,13 @@
+#pragma once
 #include <iostream>
 
 #include "data_structures/LinkedList/listNode.h"
 
+// ! Improve code readability with enums for cases, instead of numbers.
+
 int chooseDataType() {
     int choice;
+    std::cout << "------------------------------------------------------" << std::endl;
     std::cout << "Choose data type for data structure: " << std::endl;
     std::cout << "1. int" << std::endl
               << "2. float" << std::endl
@@ -22,7 +26,6 @@ int mainMenu() {
     int choice;
     std::cout << "Enter choice: ";
     std::cin >> choice;
-    std::cout << std::endl;
 
     return choice;
 }
@@ -95,21 +98,6 @@ ListNode<T>* createLinkedList(const int choice) {
     }
 }
 
-int linkedListMenu() {
-    std::cout << "---------------------------OPERATIONS ON THIS LINKED LIST---------------------------" << std::endl;
-    std::cout << "1. Display linked list." << std::endl;
-    std::cout << "2. Find total number of nodes." << std::endl;
-    std::cout << "3. Find the sum of all elements. (preferably used with linked list of data types: int, float, double)" << std::endl;
-    std::cout << "4. Search for an element." << std::endl;
-    std::cout << "5. Insert an element" << std::endl;
-
-    int choice;
-    std::cout << "Enter choice: ";
-    std::cin >> choice;
-
-    return choice;
-}
-
 int linkedListSearchMenu() {
     std::cout << "1. Perform linear search." << std::endl;
     std::cout << "2. Perform optimised linear search." << std::endl;
@@ -156,6 +144,24 @@ void performSearch(ListNode<T>* head) {
         std::cout << "[ERROR] Invalid option!" << std::endl;
         break;
     }
+}
+
+int linkedListMenu() {
+    std::cout << "---------------------------OPERATIONS ON THIS LINKED LIST---------------------------" << std::endl;
+    std::cout << "1. Display linked list." << std::endl;
+    std::cout << "2. Find total number of nodes." << std::endl;
+    std::cout << "3. Find the sum of all elements. (preferably used with linked list of data types: int, float, double)" << std::endl;
+    std::cout << "4. Search for an element." << std::endl;
+    std::cout << "5. Insert an element" << std::endl;
+    std::cout << "6. Sort linked list, and insert element in sorted order." << std::endl;
+    std::cout << "7. Delete an element by index." << std::endl;
+    std::cout << "8. Delete an element by value." << std::endl;
+
+    int choice;
+    std::cout << "Enter choice: ";
+    std::cin >> choice;
+
+    return choice;
 }
 
 template <class T>
@@ -211,10 +217,89 @@ void linkedListOperations(const int &choice, ListNode<T>* head) {
         std::cout << "------------------------------------------------------" << std::endl;
         break;
     }
+    case 6: {
+        sort<T>(head);
+        std::cout << "------------------------------------------------------" << std::endl;
+        displayLinkedList<T>(head);
+        std::cout << "------------------------------------------------------" << std::endl;
+
+        char toInsertElement;
+        std::cout << "Do you want to insert an element into the sorted linked list (y/n): ";
+        std::cin >> toInsertElement;
+
+        if (toInsertElement == 'y' || toInsertElement == 'Y') {
+            T insertElement;
+            std::cout << "Enter element to be inserted: ";
+            std::cin >> insertElement;
+
+            insertInSortedLinkedList<T>(insertElement, head);
+            displayLinkedList<T>(head);
+            std::cout << "------------------------------------------------------" << std::endl;
+        }
+        break;
+    }
+    case 7: {
+        std::cout << "------------------------------------------------------" << std::endl;
+        int index;
+        std::cout << "Enter index of element to delete: ";
+        std::cin >> index;
+
+        deleteByIndex<T>(head, index);
+        displayLinkedList<T>(head);
+        std::cout << "------------------------------------------------------" << std::endl;
+        break;
+    }
+    case 8: {
+        std::cout << "------------------------------------------------------" << std::endl;
+        T element;
+        std::cout << "Enter element to delete: ";
+        std::cin >> element;
+
+        deleteByValue<T>(head, element);
+        displayLinkedList<T>(head);
+        std::cout << "------------------------------------------------------" << std::endl;
+        break;
+    }
+
 
     default:
         // throw InvalidOptionException();
         std::cout << "[ERROR] Invalid option!" << std::endl;
         break;
+    }
+}
+
+template <class T>
+void performLinkedListOperations() {
+    const int &listChoice = listCreationMenu();
+    ListNode<int> *head = createLinkedList<int>(listChoice);
+    const int &operation = linkedListMenu();
+    linkedListOperations<int>(operation, head);
+    delete head;
+}
+
+void linkedList(const int &dataTypeChoice) {
+    switch (dataTypeChoice) {
+        case 1: {
+            performLinkedListOperations<int>();
+            break;
+        }
+        case 2: {
+            performLinkedListOperations<float>();
+            break;
+        }
+        case 3: {
+            performLinkedListOperations<double>();
+            break;
+        }
+        case 4: {
+            performLinkedListOperations<std::string>();
+            break;
+        }
+        default: {
+            // throw InvalidOptionException();
+            std::cout << "[ERROR] Invalid option!" << std::endl;
+            break;
+        }
     }
 }

@@ -9,11 +9,12 @@ private:
     T data;
     ListNode* next = NULL;
 public:
-    ListNode(T d);
+    ListNode(T);
     ~ListNode();
     T getData();
+    void setData(T);
     ListNode* getNext();
-    void setNext(ListNode *node);
+    void setNext(ListNode<T>*);
 };
 
 // * Implementation
@@ -27,6 +28,11 @@ ListNode<T>::~ListNode() {}
 template <class T>
 T ListNode<T>::getData() {
     return this -> data;
+}
+
+template <class T>
+void ListNode<T>::setData(T element) {
+    this -> data = element;
 }
 
 template <class T>
@@ -262,7 +268,7 @@ ListNode<T>* optimisedSearch(T element, ListNode<T> *head) {
 // ? Inserting new node in between head and last node: Time Complexity: O(n), Space Complexity: O(1).
 // ? Inserting new node after last node: Time Complexity: O(1), Space Complexity: O(1).
 template <class T>
-void insert(ListNode<T> *head, T element, int index = -1) {
+void insert(ListNode<T> *&head, T element, int index = -1) {
     ListNode<T> *newNode = new ListNode<T>(element);
 
     if ((index < 0 && index != -1) || index > countNodes(head)) {
@@ -293,3 +299,104 @@ void insert(ListNode<T> *head, T element, int index = -1) {
     }
 }
 
+// Sorts a linked list.                                             Time Complexity: O(n^2), Space Complexity: O(1).
+template <class T>
+void sort(ListNode<T>* head) {
+    for (auto i = head; i; i = i -> getNext()) {
+        for (auto j = i -> getNext(); j; j = j -> getNext()) {
+            if (i -> getData() > j -> getData()) {
+                auto temp = i -> getData();
+                i -> setData(j -> getData());
+                j -> setData(temp);
+            }
+        }
+    }
+}
+
+// Inserts an element in the right place in a sorted Linked List.   Time Complexity: O(n) {best case O(1)}, Space Complexity: O(1).
+template <class T>
+void insertInSortedLinkedList(T element, ListNode<T> *&head) {
+    ListNode<T> *newNode = new ListNode<T>(element);
+    ListNode<T> *temp = head, *prev = nullptr;
+
+    if (!head) {
+        head = newNode;
+    }
+
+    // if (element < head -> getData()) {
+    //     std::cout << "Head: " << head -> getData() << "; Element: " << element << std::endl;
+    //     newNode -> setNext(head);
+    //     head = newNode;
+    // }
+
+    while (temp && temp -> getData() < element) {
+        std::cout << "Temp: " << temp -> getData() << "; Element: " << element << std::endl;
+        prev = temp;
+        temp = temp -> getNext();
+    }
+
+    if (temp == head) {
+        std::cout << "Head: " << head -> getData() << "; Element: " << element << std::endl;
+        newNode -> setNext(head);
+        head = newNode;
+        return;
+    }
+
+    newNode -> setNext(prev -> getNext());
+    prev -> setNext(newNode);
+    std::cout << "Swapped the nodes! Inserted " << element << " in the right place!" << std::endl;
+}
+
+// Deletes a node from a linked list by index.                               Time Complexity: O(n), Space Complexity: O(1).
+template <class T>
+void deleteByIndex(ListNode<T> *&head, int index) {
+    if (index <= 0 || index > countNodes(head)) {
+        std::cout << "[ERROR] Invalid Index!" << std::endl;
+        return;
+    }
+
+    if (index == 1) {
+        ListNode<T> *temp = head;
+        head = head -> getNext();
+        std::cout << "Deleted " << temp -> getData() << std::endl;
+        delete temp;
+        return;
+    }
+
+    ListNode<T> *temp = head, *prev = nullptr;
+    for (int i = 0; i < index - 1; i++) {
+        prev = temp;
+        temp = temp -> getNext();
+    }
+
+    prev -> setNext(temp -> getNext());
+    std::cout << "Deleted " << temp -> getData() << std::endl;
+    delete temp;
+}
+
+// Deletes a node from a linked list by value.                               Time Complexity: O(n), Space Complexity: O(1).
+template <class T>
+void deleteByValue(ListNode<T> *&head, T element) {
+    ListNode<T> *temp = head, *prev = nullptr;
+
+    while (temp && temp -> getData() != element) {
+        prev = temp;
+        temp = temp -> getNext();
+    }
+
+    if (!temp) {
+        std::cout << "[WARNING] Element not found!" << std::endl;
+        return;
+    }
+
+    if (temp == head) {
+        prev = temp -> getNext();
+        head = prev;
+        delete temp;
+        return;
+    }
+
+    prev -> setNext(temp -> getNext());
+    std::cout << "Deleted " << temp -> getData() << std::endl;
+    delete temp;
+}
