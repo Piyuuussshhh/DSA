@@ -19,7 +19,7 @@ int main() {
             default: {
                 // throw InvalidOptionException();
                 std::cout << "[ERROR] Invalid option!" << std::endl;
-                break;
+                exit(0);
             }
         }
 

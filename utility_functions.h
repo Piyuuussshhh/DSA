@@ -4,6 +4,7 @@
 #include "data_structures/LinkedList/listNode.h"
 
 // ! Improve code readability with enums for cases, instead of numbers.
+// ! Utitity functions only for linked list as of now, make them generic.
 
 int chooseDataType() {
     int choice;
@@ -39,6 +40,17 @@ int listCreationMenu() {
     std::cin >> listCreationChoice;
 
     return listCreationChoice;
+}
+
+int linkedListSearchMenu() {
+    std::cout << "1. Perform linear search." << std::endl;
+    std::cout << "2. Perform optimised linear search." << std::endl;
+
+    int choice;
+    std::cout << "Enter choice: ";
+    std::cin >> choice;
+
+    return choice;
 }
 
 template <class T>
@@ -84,29 +96,16 @@ ListNode<T>* createLinkedList(const int choice) {
     switch (choice) {
     case 1: {
         return createLinkedListByArray<T>();
-        break;
     }
     case 2: {
         return createLinkedListManually<T>();
-        break;
     }
 
     default:
         // throw InvalidOptionException();
         std::cout << "[ERROR] Invalid option!" << std::endl;
-        return nullptr;
+        exit(0);
     }
-}
-
-int linkedListSearchMenu() {
-    std::cout << "1. Perform linear search." << std::endl;
-    std::cout << "2. Perform optimised linear search." << std::endl;
-
-    int choice;
-    std::cout << "Enter choice: ";
-    std::cin >> choice;
-
-    return choice;
 }
 
 template <class T>
@@ -142,7 +141,7 @@ void performSearch(ListNode<T>* head) {
     default:
         // throw InvalidOptionException();
         std::cout << "[ERROR] Invalid option!" << std::endl;
-        break;
+        exit(0);
     }
 }
 
@@ -156,6 +155,7 @@ int linkedListMenu() {
     std::cout << "6. Sort linked list, and insert element in sorted order." << std::endl;
     std::cout << "7. Delete an element by index." << std::endl;
     std::cout << "8. Delete an element by value." << std::endl;
+    std::cout << "9. Delete duplicates in a sorted linked list." << std::endl;
 
     int choice;
     std::cout << "Enter choice: ";
@@ -260,12 +260,22 @@ void linkedListOperations(const int &choice, ListNode<T>* head) {
         std::cout << "------------------------------------------------------" << std::endl;
         break;
     }
+    case 9: {
+        if (!isLinkedListSorted(head)) {
+            std::cout << "[ERROR] Linked List is not sorted!" << std::endl;
+            return;
+        }
+        deleteDuplicateElementsInSortedLL<T>(head);
+        std::cout << "Deleted duplicate elements! The new linked list is: ";
+        displayLinkedList<T>(head);
+        break;
+    }
 
 
     default:
         // throw InvalidOptionException();
         std::cout << "[ERROR] Invalid option!" << std::endl;
-        break;
+        exit(0);
     }
 }
 
@@ -299,7 +309,7 @@ void linkedList(const int &dataTypeChoice) {
         default: {
             // throw InvalidOptionException();
             std::cout << "[ERROR] Invalid option!" << std::endl;
-            break;
+            exit(0);
         }
     }
 }

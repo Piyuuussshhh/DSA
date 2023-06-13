@@ -400,3 +400,40 @@ void deleteByValue(ListNode<T> *&head, T element) {
     std::cout << "Deleted " << temp -> getData() << std::endl;
     delete temp;
 }
+
+// Checks if linked list is sorted.                                          Time Complexity O(n), Space Complexity: O(1).
+template <class T>
+bool isLinkedListSorted(ListNode<T> *head) {
+    ListNode<T> *temp = head -> getNext(), *prev = head;
+
+    while (temp) {
+        if (prev -> getData() > temp -> getData()) {
+            return false;
+        }
+        prev = temp;
+        temp = temp -> getNext();
+    }
+
+    return true;
+}
+
+// Deletes duplicate nodes in a sorted linked list.                          Time Complexity O(n), Space Complexity: O(1).
+template <class T>
+void deleteDuplicateElementsInSortedLL(ListNode<T>* head) {
+    ListNode<T>* temp = head -> getNext(), *prev = head;
+
+    int index = 0;
+    while (temp) {
+        if (temp -> getData() != prev -> getData()) {
+            prev = temp;
+            temp = temp -> getNext();
+        } else {
+            prev -> setNext(temp -> getNext());
+            std::cout << "Deleting element " << temp -> getData() << " at index " << index << std::endl;
+            delete temp;
+            temp = prev -> getNext();
+        }
+        index++;
+    }
+}
+
