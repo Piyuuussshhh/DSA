@@ -156,6 +156,8 @@ int linkedListMenu() {
     std::cout << "7. Delete an element by index." << std::endl;
     std::cout << "8. Delete an element by value." << std::endl;
     std::cout << "9. Delete duplicates in a sorted linked list." << std::endl;
+    std::cout << "10. Reverse a linked list by swapping values." << std::endl;
+    std::cout << "11. Reverse a linked list by swapping links." << std::endl;
 
     int choice;
     std::cout << "Enter choice: ";
@@ -261,6 +263,7 @@ void linkedListOperations(const int &choice, ListNode<T>* head) {
         break;
     }
     case 9: {
+        std::cout << "------------------------------------------------------" << std::endl;
         if (!isLinkedListSorted(head)) {
             std::cout << "[ERROR] Linked List is not sorted!" << std::endl;
             return;
@@ -268,6 +271,23 @@ void linkedListOperations(const int &choice, ListNode<T>* head) {
         deleteDuplicateElementsInSortedLL<T>(head);
         std::cout << "Deleted duplicate elements! The new linked list is: ";
         displayLinkedList<T>(head);
+        std::cout << "------------------------------------------------------" << std::endl;
+        break;
+    }
+    case 10: {
+        std::cout << "------------------------------------------------------" << std::endl;
+        reverseLinkedListByValue<T>(head);
+        std::cout << "Reversed! The new linked list is: ";
+        displayLinkedList<T>(head);
+        std::cout << "------------------------------------------------------" << std::endl;
+        break;
+    }
+    case 11: {
+        std::cout << "------------------------------------------------------" << std::endl;
+        reverseLinkedListByLinks<T>(head);
+        std::cout << "Reversed! The new linked list is: ";
+        displayLinkedList<T>(head);
+        std::cout << "------------------------------------------------------" << std::endl;
         break;
     }
 

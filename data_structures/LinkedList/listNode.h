@@ -419,7 +419,7 @@ bool isLinkedListSorted(ListNode<T> *head) {
 
 // Deletes duplicate nodes in a sorted linked list.                          Time Complexity O(n), Space Complexity: O(1).
 template <class T>
-void deleteDuplicateElementsInSortedLL(ListNode<T>* head) {
+void deleteDuplicateElementsInSortedLL(ListNode<T> *head) {
     ListNode<T>* temp = head -> getNext(), *prev = head;
 
     int index = 0;
@@ -435,5 +435,46 @@ void deleteDuplicateElementsInSortedLL(ListNode<T>* head) {
         }
         index++;
     }
+}
+
+// Reverses a linked list by swapping the values.                           Time Complexity: O(2n) ~ O(n), Space Complexity: O(n).
+// ? This method is not preferred as copying data can take varying amounts of memory, sometimes less, sometimes a lot.
+// ? Swapping links is preferred because pointers take a constant amount of memory for every data type.
+template <class T>
+void reverseLinkedListByValue(ListNode<T> *head) {
+    int numOfNodes = countNodes<T>(head);
+    T *auxillaryArray = new T[numOfNodes];
+
+    ListNode<T> *temp = head;
+    int index = 0;
+    while (temp) {
+        auxillaryArray[index++] = temp -> getData();
+        temp = temp -> getNext();
+    }
+    index--;
+
+    temp = head;
+
+    while (temp) {
+        temp -> setData(auxillaryArray[index--]);
+        temp = temp -> getNext();
+    }
+}
+
+// Reverses a linked list by swapping links with sliding pointers.           Time Complexity: O(n), Space Complexity: O(1).
+template <class T>
+void reverseLinkedListByLinks(ListNode<T> *&head) {
+    ListNode<T> *prev = nullptr, *current = nullptr, *next = head;
+
+    while (next) {
+        prev = current;
+        current = next;
+        next = next -> getNext();
+
+        current -> setNext(prev);
+    }
+    
+    // * line 477 is vv important!!!!
+    head = current;
 }
 
