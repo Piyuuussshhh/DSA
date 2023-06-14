@@ -6,6 +6,17 @@
 // ! Improve code readability with enums for cases, instead of numbers.
 // ! Utitity functions only for linked list as of now, make them generic.
 
+int mainMenu() {
+    std::cout << "---------------------------MENU---------------------------" << std::endl;
+    std::cout << "1. Linked List" << std::endl;
+
+    int choice;
+    std::cout << "Enter choice: ";
+    std::cin >> choice;
+
+    return choice;
+}
+
 int chooseDataType() {
     int choice;
     std::cout << "------------------------------------------------------" << std::endl;
@@ -20,10 +31,10 @@ int chooseDataType() {
     return choice;
 }
 
-int mainMenu() {
-    std::cout << "---------------------------MENU---------------------------" << std::endl;
-    std::cout << "1. Linked List" << std::endl;
-
+int numberOfLinkedList() {
+    std::cout << "---------------------------NUMBER OF LINKED LIST---------------------------" << std::endl;
+    std::cout << "1. Single linked list." << std::endl
+              << "2. Two linked lists." << std::endl;
     int choice;
     std::cout << "Enter choice: ";
     std::cin >> choice;
@@ -135,7 +146,7 @@ void performSearch(ListNode<T>* head) {
             return;
         }
 
-        displayLinkedList<T>(head);
+        displaySingleLinkedList<T>(head);
         break;
     }
     default:
@@ -145,7 +156,7 @@ void performSearch(ListNode<T>* head) {
     }
 }
 
-int linkedListMenu() {
+int singleLinkedListMenu() {
     std::cout << "---------------------------OPERATIONS ON THIS LINKED LIST---------------------------" << std::endl;
     std::cout << "1. Display linked list." << std::endl;
     std::cout << "2. Find total number of nodes." << std::endl;
@@ -167,11 +178,11 @@ int linkedListMenu() {
 }
 
 template <class T>
-void linkedListOperations(const int &choice, ListNode<T>* head) {
+void singleLinkedListOperations(const int &choice, ListNode<T> *&head) {
     switch (choice) {
     case 1: {
         std::cout << "------------------------------------------------------" << std::endl;
-        displayLinkedList<T>(head);
+        displaySingleLinkedList<T>(head);
         std::cout << "------------------------------------------------------" << std::endl;
         break;
     }
@@ -215,14 +226,14 @@ void linkedListOperations(const int &choice, ListNode<T>* head) {
             insert<T>(head, insertElement);
         }
         std::cout << "------------------------------------------------------" << std::endl;
-        displayLinkedList<T>(head);
+        displaySingleLinkedList<T>(head);
         std::cout << "------------------------------------------------------" << std::endl;
         break;
     }
     case 6: {
         sort<T>(head);
         std::cout << "------------------------------------------------------" << std::endl;
-        displayLinkedList<T>(head);
+        displaySingleLinkedList<T>(head);
         std::cout << "------------------------------------------------------" << std::endl;
 
         char toInsertElement;
@@ -235,7 +246,7 @@ void linkedListOperations(const int &choice, ListNode<T>* head) {
             std::cin >> insertElement;
 
             insertInSortedLinkedList<T>(insertElement, head);
-            displayLinkedList<T>(head);
+            displaySingleLinkedList<T>(head);
             std::cout << "------------------------------------------------------" << std::endl;
         }
         break;
@@ -247,7 +258,7 @@ void linkedListOperations(const int &choice, ListNode<T>* head) {
         std::cin >> index;
 
         deleteByIndex<T>(head, index);
-        displayLinkedList<T>(head);
+        displaySingleLinkedList<T>(head);
         std::cout << "------------------------------------------------------" << std::endl;
         break;
     }
@@ -258,7 +269,7 @@ void linkedListOperations(const int &choice, ListNode<T>* head) {
         std::cin >> element;
 
         deleteByValue<T>(head, element);
-        displayLinkedList<T>(head);
+        displaySingleLinkedList<T>(head);
         std::cout << "------------------------------------------------------" << std::endl;
         break;
     }
@@ -270,7 +281,7 @@ void linkedListOperations(const int &choice, ListNode<T>* head) {
         }
         deleteDuplicateElementsInSortedLL<T>(head);
         std::cout << "Deleted duplicate elements! The new linked list is: ";
-        displayLinkedList<T>(head);
+        displaySingleLinkedList<T>(head);
         std::cout << "------------------------------------------------------" << std::endl;
         break;
     }
@@ -278,7 +289,7 @@ void linkedListOperations(const int &choice, ListNode<T>* head) {
         std::cout << "------------------------------------------------------" << std::endl;
         reverseLinkedListByValue<T>(head);
         std::cout << "Reversed! The new linked list is: ";
-        displayLinkedList<T>(head);
+        displaySingleLinkedList<T>(head);
         std::cout << "------------------------------------------------------" << std::endl;
         break;
     }
@@ -286,7 +297,7 @@ void linkedListOperations(const int &choice, ListNode<T>* head) {
         std::cout << "------------------------------------------------------" << std::endl;
         reverseLinkedListByLinks<T>(head);
         std::cout << "Reversed! The new linked list is: ";
-        displayLinkedList<T>(head);
+        displaySingleLinkedList<T>(head);
         std::cout << "------------------------------------------------------" << std::endl;
         break;
     }
@@ -300,32 +311,134 @@ void linkedListOperations(const int &choice, ListNode<T>* head) {
 }
 
 template <class T>
-void performLinkedListOperations() {
+void performSingleLinkedListOperations() {
     const int &listChoice = listCreationMenu();
-    ListNode<int> *head = createLinkedList<int>(listChoice);
-    const int &operation = linkedListMenu();
-    linkedListOperations<int>(operation, head);
+    ListNode<T> *head = createLinkedList<T>(listChoice);
+    const int &operation = singleLinkedListMenu();
+    singleLinkedListOperations<T>(operation, head);
     delete head;
 }
 
-void linkedList(const int &dataTypeChoice) {
+void singleLinkedList(const int &dataTypeChoice) {
     switch (dataTypeChoice) {
         case 1: {
-            performLinkedListOperations<int>();
+            performSingleLinkedListOperations<int>();
             break;
         }
         case 2: {
-            performLinkedListOperations<float>();
+            performSingleLinkedListOperations<float>();
             break;
         }
         case 3: {
-            performLinkedListOperations<double>();
+            performSingleLinkedListOperations<double>();
             break;
         }
         case 4: {
-            performLinkedListOperations<std::string>();
+            performSingleLinkedListOperations<std::string>();
             break;
         }
+        default: {
+            // throw InvalidOptionException();
+            std::cout << "[ERROR] Invalid option!" << std::endl;
+            exit(0);
+        }
+    }
+}
+
+int twoLinkedListsMenu() {
+    std::cout << "---------------------------OPERATIONS ON THESE LINKED LISTS---------------------------" << std::endl;
+    std::cout << "1. Concatenate the two linked lists." << std::endl;
+    std::cout << "2. Sort the linked lists and merge them." << std::endl;
+
+    int choice;
+    std::cout << "Enter choice: ";
+    std::cin >> choice;
+
+    return choice;
+}
+
+template <class T>
+void twoLinkedListOperations(const int &operation, ListNode<T> *first, ListNode<T> *second) {
+    switch (operation) {
+        case 1: {
+            std::cout << "------------------------------------------------------" << std::endl;
+            ListNode<T> *newHead = concatenateLinkedLists<T>(first, second);
+            std::cout << "Concatenated both linked lists! New linked list: ";
+            displaySingleLinkedList<T>(newHead);
+            std::cout << "------------------------------------------------------" << std::endl;
+            break;
+        }
+        case 2: {
+            std::cout << "------------------------------------------------------" << std::endl;
+            sort<T>(first);
+            sort<T>(second);
+            std::cout << "Sorted both linked lists!" << std::endl;
+
+            ListNode<T> *newHead = sortedMerge<T>(first, second);
+            std::cout << "Merged both linked lists! New linked list: ";
+            displaySingleLinkedList<T>(newHead);
+            std::cout << "------------------------------------------------------" << std::endl;
+            break;
+        }
+
+        default: {
+            // throw InvalidOptionException();
+            std::cout << "[ERROR] Invalid option!" << std::endl;
+            exit(0);
+        }
+    }
+}
+
+template <class T>
+void performTwoLinkedListsOperations() {
+    const int &listChoice1 = listCreationMenu();
+    ListNode<T> *first = createLinkedList<T>(listChoice1);
+
+    const int &listChoice2 = listCreationMenu();
+    ListNode<T> *second = createLinkedList<T>(listChoice2);
+
+    const int &operation = twoLinkedListsMenu();
+    twoLinkedListOperations<T>(operation, first, second);
+}
+
+void twoLinkedList(const int &dataTypeChoice) {
+    switch (dataTypeChoice) {
+        case 1: {
+            performTwoLinkedListsOperations<int>();
+            break;
+        }
+        case 2: {
+            performTwoLinkedListsOperations<float>();
+            break;
+        }
+        case 3: {
+            performTwoLinkedListsOperations<double>();
+            break;
+        }
+        case 4: {
+            performTwoLinkedListsOperations<std::string>();
+            break;
+        }
+        default: {
+            // throw InvalidOptionException();
+            std::cout << "[ERROR] Invalid option!" << std::endl;
+            exit(0);
+        }
+    }
+}
+
+void linkedList(const int &dataTypeChoice) {
+    const int &numberOfLLChoice = numberOfLinkedList();
+    switch (numberOfLLChoice) {
+        case 1: {
+            singleLinkedList(dataTypeChoice);
+            break;
+        }
+        case 2: {
+            twoLinkedList(dataTypeChoice);
+            break;
+        }
+
         default: {
             // throw InvalidOptionException();
             std::cout << "[ERROR] Invalid option!" << std::endl;

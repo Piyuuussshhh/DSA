@@ -49,7 +49,7 @@ void ListNode<T>::setNext(ListNode<T> *node) {
 
 // Prints a linked list iteratively.                           Time Complexity: O(n), Space Complexity: O(1).
 template <class T>
-void displayLinkedList(ListNode<T> *head) {
+void displaySingleLinkedList(ListNode<T> *head) {
     ListNode<T> *temp = head;
     while (temp != nullptr) {
         std::cout << temp -> getData() << " ";
@@ -473,8 +473,66 @@ void reverseLinkedListByLinks(ListNode<T> *&head) {
 
         current -> setNext(prev);
     }
-    
+
     // * line 477 is vv important!!!!
     head = current;
 }
 
+// Concatenates two linked lists into a single linked list.                 Time Complexity: O(n), Space Complexity: O(1).
+template <class T>
+ListNode<T>* concatenateLinkedLists(ListNode<T> *first, ListNode<T> *second) {
+    ListNode<T> *temp = first;
+
+    while (temp -> getNext()) {
+        temp = temp -> getNext();
+    }
+
+    temp -> setNext(second);
+    return first;
+}
+
+// Merges two sorted linked lists into one sorted linked list. Returns address of head of merged linked list. Time Complexity: O(m + n), Space Complexity: O(1).
+// !FIX NOT WORKING IDK WHY
+template <class T>
+ListNode<T>* sortedMerge(ListNode<T> *first, ListNode<T> *second) {
+    ListNode<T> *head = nullptr, *last = nullptr;
+    ListNode<T> *temp1 = first, *temp2 = second;
+
+    if (temp1 -> getData() < second -> getData()) {
+        head = last = temp1;
+        temp1 = temp1 -> getNext();
+        last -> setNext(nullptr);
+    } else {
+        head = last = temp2;
+        temp2 = temp2 -> getNext();
+        last -> setNext(nullptr);
+    }
+
+    while (temp1 && temp2) {
+        if (first -> getData() < second -> getData()) {
+            last -> setNext(temp1);
+            last = temp1;
+            temp1 = temp1 -> getNext();
+            last -> setNext(nullptr);
+        } else {
+            last -> setNext(temp2);
+            last = temp2;
+            temp2 = temp2 -> getNext();
+            last -> setNext(nullptr);
+        }
+    }
+
+    if (temp1) {
+        last -> setNext(temp1);
+    } else if (temp2) {
+        last -> setNext(temp2);
+    }
+
+    return head;
+}
+
+// Checks if the linked list has a loop. Time complexity: O(), Space Complexity: O().
+template <class T>
+bool doesLoopExist(ListNode<T> *head) {
+    ListNode<T> *pointer1 = head, *pointer2 = head;
+}
