@@ -570,11 +570,11 @@ template <class T>
 ListNode<T>* middleNode(ListNode<T> *head) {
     ListNode<T> *last = head, *middle = head;
 
-    while (last) {
+    while (last && last -> getNext()) {
         middle = middle -> getNext();
 
-        last = last -> getNext();
-        last = last -> getNext();
+        last = last -> getNext() ? last -> getNext() : nullptr;
+        if (last) last = last -> getNext() ? last -> getNext() : nullptr;
     }
 
     return middle;
