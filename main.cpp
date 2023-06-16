@@ -15,6 +15,10 @@ int main() {
                 linkedList(dataTypeChoice);
                 break;
             }
+            case 2: {
+                doublyLinkedList(dataTypeChoice);
+                break;
+            }
 
             default: {
                 // throw InvalidOptionException();

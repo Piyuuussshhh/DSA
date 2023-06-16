@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "data_structures/LinkedList/listNode.h"
+#include "data_structures/LinkedList/doubleListNode.h"
 
 // ! Improve code readability with enums for cases, instead of numbers.
 // ! Utitity functions only for linked list as of now, make them generic.
@@ -9,6 +10,7 @@
 int mainMenu() {
     std::cout << "---------------------------MENU---------------------------" << std::endl;
     std::cout << "1. Linked List" << std::endl;
+    std::cout << "2. Doubly Linked List" << std::endl;
 
     int choice;
     std::cout << "Enter choice: ";
@@ -30,6 +32,8 @@ int chooseDataType() {
 
     return choice;
 }
+
+// ! Linked list functions.
 
 int numberOfLinkedList() {
     std::cout << "---------------------------NUMBER OF LINKED LIST---------------------------" << std::endl;
@@ -149,6 +153,7 @@ void performSearch(ListNode<T>* head) {
         displaySingleLinkedList<T>(head);
         break;
     }
+
     default:
         // throw InvalidOptionException();
         std::cout << "[ERROR] Invalid option!" << std::endl;
@@ -302,7 +307,6 @@ void singleLinkedListOperations(const int &choice, ListNode<T> *&head) {
         break;
     }
 
-
     default:
         // throw InvalidOptionException();
         std::cout << "[ERROR] Invalid option!" << std::endl;
@@ -347,6 +351,7 @@ void singleLinkedList(const int &dataTypeChoice) {
             performSingleLinkedListOperations<std::string>();
             break;
         }
+
         default: {
             // throw InvalidOptionException();
             std::cout << "[ERROR] Invalid option!" << std::endl;
@@ -431,6 +436,7 @@ void twoLinkedList(const int &dataTypeChoice) {
             performTwoLinkedListsOperations<std::string>();
             break;
         }
+
         default: {
             // throw InvalidOptionException();
             std::cout << "[ERROR] Invalid option!" << std::endl;
@@ -448,6 +454,153 @@ void linkedList(const int &dataTypeChoice) {
         }
         case 2: {
             twoLinkedList(dataTypeChoice);
+            break;
+        }
+
+        default: {
+            // throw InvalidOptionException();
+            std::cout << "[ERROR] Invalid option!" << std::endl;
+            exit(0);
+        }
+    }
+}
+
+// ! Doubly Linked List functions.
+
+template <class T>
+DoubleListNode<T>* createDoublyLinkedList() {
+    std::cout << "------------------------------------------------------" << std::endl;
+    int sizeOfArray;
+    std::cout << "Enter array size: ";
+    std::cin >> sizeOfArray;
+
+    T *arr = new T[sizeOfArray];
+
+    for (int i = 0; i < sizeOfArray; i++) {
+        std::cout << "Enter element " << i + 1 << ": ";
+        std::cin >> arr[i];
+    }
+
+    DoubleListNode<T> *head = createDoublyLinkedListFromArray<T>(arr, sizeOfArray);
+    return head;
+}
+
+template <class T>
+void deleteDoublyLinkedList(DoubleListNode<T> *&head) {
+    DoubleListNode<T> *temp = head;
+    while (temp) {
+        head = head -> getNext();
+        delete temp;
+        temp = head;
+    }
+}
+
+
+int doublyLinkedListMenu() {
+    std::cout << "---------------------------OPERATIONS ON THIS DOUBLY LINKED LIST---------------------------" << std::endl;
+    std::cout << "1. Display doubly linked list." << std::endl;
+    std::cout << "2. Find total number of nodes." << std::endl;
+    std::cout << "3. Insert an element." << std::endl;
+    std::cout << "4. Delete an element" << std::endl;
+    std::cout << "5. Reverse the linked list." << std::endl;
+    std::cout << "6. Find the middle node." << std::endl;
+
+    int choice;
+    std::cout << "Enter choice: ";
+    std::cin >> choice;
+
+    return choice;
+}
+
+template <class T>
+void doublyLinkedListOperations(const int &choice, DoubleListNode<T> *&head) {
+    switch (choice) {
+        case 1: {
+            std::cout << "------------------------------------------------------" << std::endl;
+            displayDoublyLinkedList<T>(head);
+            std::cout << "------------------------------------------------------" << std::endl;
+            break;
+        }
+        case 2: {
+            std::cout << "------------------------------------------------------" << std::endl;
+            std::cout << "Total number of nodes = " << countNodes<T>(head) << std::endl;
+            std::cout << "------------------------------------------------------" << std::endl;
+            break;
+        }
+        case 3: {
+            std::cout << "------------------------------------------------------" << std::endl;
+            T element;
+            std::cout << "Enter element: ";
+            std::cin >> element;
+
+            int index;
+            std::cout << "Enter index of insertion (0 for first, -1 for last): ";
+            std::cin >> index;
+
+            insert<T>(head, element, index);
+            displayDoublyLinkedList<T>(head);
+            std::cout << "------------------------------------------------------" << std::endl;
+            break;
+        }
+        case 4: {
+            int index;
+            std::cout << "Enter index of deletion (1 for first): ";
+            std::cin >> index;
+
+            deleteByIndex(head, index);
+            displayDoublyLinkedList<T>(head);
+            std::cout << "------------------------------------------------------" << std::endl;
+            break;
+        }
+        case 5: {
+            std::cout << "------------------------------------------------------" << std::endl;
+            reverse<T>(head);
+            displayDoublyLinkedList<T>(head);
+            std::cout << "------------------------------------------------------" << std::endl;
+            break;
+        }
+        case 6: {
+            std::cout << "------------------------------------------------------" << std::endl;
+            DoubleListNode<T> *middle = middleNode<T>(head);
+            std::cout << "Middle element: " << middle -> getData() << std::endl;
+            std::cout << "------------------------------------------------------" << std::endl;
+            break;
+        }
+
+        default: {
+            // throw InvalidOptionException();
+            std::cout << "[ERROR] Invalid option!" << std::endl;
+            exit(0);
+        }
+    }
+}
+
+template <class T>
+void performDoublyLinkedListOperations() {
+    DoubleListNode<T> *head = createDoublyLinkedList<T>();
+    const int &operation = doublyLinkedListMenu();
+
+    doublyLinkedListOperations<T>(operation, head);
+    deleteDoublyLinkedList<T>(head);
+}
+
+void doublyLinkedList(const int &dataTypeChoice) {
+    switch (dataTypeChoice)
+    {
+        case 1: {
+            performDoublyLinkedListOperations<int>();
+            break;
+        }
+        case 2: {
+            performDoublyLinkedListOperations<float>();
+            break;
+        }
+        case 3: {
+            performDoublyLinkedListOperations<double>();
+            break;
+        }
+        case 4: {
+            performDoublyLinkedListOperations<std::string>();
             break;
         }
 

@@ -96,7 +96,7 @@ DoubleListNode<T>* createDoublyLinkedListFromArray(T arr[], int size) {
 
 // Counts the number of nodes in a doubly linked list.
 template <class T>
-int _countNodes(DoubleListNode<T> *head) {
+int countNodes(DoubleListNode<T> *head) {
     int count = 0;
 
     DoubleListNode<T> *temp = head;
@@ -113,7 +113,7 @@ template <class T>
 void insert(DoubleListNode<T> *&head, T element, int index = -1) {
     DoubleListNode<T> *newNode = new DoubleListNode<T>(element);
 
-    if ((index < 0 && index != -1) || index > _countNodes(head)) {
+    if ((index < 0 && index != -1) || index > countNodes<T>(head)) {
         std::cout << "[ERROR] Invalid index! position" << std::endl;
         return;
     }
@@ -153,7 +153,7 @@ void insert(DoubleListNode<T> *&head, T element, int index = -1) {
 // Deletes an element in a doubly linked list by index.
 template <class T>
 void deleteByIndex(DoubleListNode<T> *&head, int index) {
-    if (index < 0 || index > _countNodes<T>(head)) {
+    if (index < 0 || index > countNodes<T>(head)) {
         std::cout << "[ERROR] Invalid Index!" << std::endl;
         return;
     }
@@ -239,11 +239,11 @@ template <class T>
 DoubleListNode<T>* middleNode(DoubleListNode<T> *head) {
     DoubleListNode<T> *last = head, *middle = head;
 
-    while (last) {
+    while (last && last -> getNext()) {
         middle = middle -> getNext();
 
-        last = last -> getNext();
-        last = last -> getNext();
+        last = last -> getNext() ? last -> getNext() : nullptr;
+        if (last) last = last -> getNext() ? last -> getNext() : nullptr;
     }
 
     return middle;
