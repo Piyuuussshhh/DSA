@@ -168,7 +168,7 @@ int singleLinkedListMenu() {
     std::cout << "8. Delete an element by value." << std::endl;
     std::cout << "9. Delete duplicates in a sorted linked list." << std::endl;
     std::cout << "10. Reverse a linked list by swapping values." << std::endl;
-    std::cout << "11. Reverse a linked list by swapping links." << std::endl;
+    std::cout << "11. Make linked list circular." << std::endl;
 
     int choice;
     std::cout << "Enter choice: ";
@@ -311,12 +311,22 @@ void singleLinkedListOperations(const int &choice, ListNode<T> *&head) {
 }
 
 template <class T>
+void deleteLinkedList(ListNode<T> *&head) {
+    ListNode<T> *temp = head;
+    while (temp) {
+        head = head -> getNext();
+        delete temp;
+        temp = head;
+    }
+}
+
+template <class T>
 void performSingleLinkedListOperations() {
     const int &listChoice = listCreationMenu();
     ListNode<T> *head = createLinkedList<T>(listChoice);
     const int &operation = singleLinkedListMenu();
     singleLinkedListOperations<T>(operation, head);
-    delete head;
+    deleteLinkedList<T>(head);
 }
 
 void singleLinkedList(const int &dataTypeChoice) {
@@ -366,6 +376,7 @@ void twoLinkedListOperations(const int &operation, ListNode<T> *first, ListNode<
             std::cout << "Concatenated both linked lists! New linked list: ";
             displaySingleLinkedList<T>(newHead);
             std::cout << "------------------------------------------------------" << std::endl;
+            deleteLinkedList<T>(newHead);
             break;
         }
         case 2: {
@@ -378,6 +389,7 @@ void twoLinkedListOperations(const int &operation, ListNode<T> *first, ListNode<
             std::cout << "Merged both linked lists! New linked list: ";
             displaySingleLinkedList<T>(newHead);
             std::cout << "------------------------------------------------------" << std::endl;
+            deleteLinkedList<T>(newHead);
             break;
         }
 

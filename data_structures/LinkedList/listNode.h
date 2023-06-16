@@ -3,6 +3,7 @@
 #include <limits>
 
 // * Declaration
+
 template <class T = int>
 class ListNode {
 private:
@@ -51,7 +52,7 @@ void ListNode<T>::setNext(ListNode<T> *node) {
 template <class T>
 void displaySingleLinkedList(ListNode<T> *head) {
     ListNode<T> *temp = head;
-    while (temp != nullptr) {
+    while (temp) {
         std::cout << temp -> getData() << " ";
         temp = temp -> getNext();
     } std::cout << std::endl;
@@ -492,47 +493,89 @@ ListNode<T>* concatenateLinkedLists(ListNode<T> *first, ListNode<T> *second) {
 }
 
 // Merges two sorted linked lists into one sorted linked list. Returns address of head of merged linked list. Time Complexity: O(m + n), Space Complexity: O(1).
-// !FIX NOT WORKING IDK WHY
 template <class T>
 ListNode<T>* sortedMerge(ListNode<T> *first, ListNode<T> *second) {
     ListNode<T> *head = nullptr, *last = nullptr;
-    ListNode<T> *temp1 = first, *temp2 = second;
 
-    if (temp1 -> getData() < second -> getData()) {
-        head = last = temp1;
-        temp1 = temp1 -> getNext();
+    if (first -> getData() < second -> getData()) {
+        head = last = first;
+        first = first -> getNext();
         last -> setNext(nullptr);
     } else {
-        head = last = temp2;
-        temp2 = temp2 -> getNext();
+        head = last = second;
+        second = second -> getNext();
         last -> setNext(nullptr);
     }
 
-    while (temp1 && temp2) {
+    while (first && second) {
         if (first -> getData() < second -> getData()) {
-            last -> setNext(temp1);
-            last = temp1;
-            temp1 = temp1 -> getNext();
+            last -> setNext(first);
+            last = first;
+            first = first -> getNext();
             last -> setNext(nullptr);
         } else {
-            last -> setNext(temp2);
-            last = temp2;
-            temp2 = temp2 -> getNext();
+            last -> setNext(second);
+            last = second;
+            second = second -> getNext();
             last -> setNext(nullptr);
         }
     }
 
-    if (temp1) {
-        last -> setNext(temp1);
-    } else if (temp2) {
-        last -> setNext(temp2);
+    if (first) {
+        last -> setNext(first);
+    } else if (second) {
+        last -> setNext(second);
     }
 
     return head;
 }
 
-// Checks if the linked list has a loop. Time complexity: O(), Space Complexity: O().
+// Checks if the linked list has a loop. Time complexity: ~O(n), Space Complexity: O(1).
 template <class T>
 bool doesLoopExist(ListNode<T> *head) {
     ListNode<T> *pointer1 = head, *pointer2 = head;
+
+    while (pointer1 || pointer2) {
+        // Move pointer1 once.
+        pointer1 = pointer1 -> getNext() ? pointer1 -> getNext() : nullptr;
+        // Move pointer2 twice.
+        pointer2 = pointer2 -> getNext() ? pointer2 -> getNext() : nullptr;
+        pointer2 = pointer2 -> getNext() ? pointer2 -> getNext() : nullptr;
+        // If pointer1 and pointer 2 meet again, loop exists.
+        if (pointer1 == pointer2) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+// Creates a circularly linked list.
+template <class T>
+ListNode<T>* makeCircularLinkedList(T arr[], int size) {
+    ListNode<T> *head = createLinkedListFromArray(arr, size);
+
+    ListNode<T> *temp = head;
+
+    while (temp -> getNext()) {
+        temp = temp -> getNext();
+    }
+
+    temp -> setNext(head);
+    return head;
+}
+
+// Returns the middle element of the linked list.
+template <class T>
+ListNode<T>* middleNode(ListNode<T> *head) {
+    ListNode<T> *last = head, *middle = head;
+
+    while (last) {
+        middle = middle -> getNext();
+
+        last = last -> getNext();
+        last = last -> getNext();
+    }
+
+    return middle;
 }
