@@ -350,21 +350,27 @@ void insertInSortedLinkedList(T element, ListNode<T> *&head) {
 
 // Deletes a node from a linked list by index.                               Time Complexity: O(n), Space Complexity: O(1).
 template <class T>
-void deleteByIndex(ListNode<T> *&head, int index) {
+void deleteByIndex(ListNode<T> *&head, int index = -1) {
     if (index <= 0 || index > countNodes(head)) {
         std::cout << "[ERROR] Invalid Index!" << std::endl;
         return;
     }
 
+    ListNode<T> *temp = head, *prev = nullptr;
     if (index == 1) {
-        ListNode<T> *temp = head;
         head = head -> getNext();
+        std::cout << "Deleted " << temp -> getData() << std::endl;
+        delete temp;
+        return;
+    } else if (index == -1) {
+        while (temp -> getNext()) {
+            temp = temp -> getNext();
+        }
         std::cout << "Deleted " << temp -> getData() << std::endl;
         delete temp;
         return;
     }
 
-    ListNode<T> *temp = head, *prev = nullptr;
     for (int i = 0; i < index - 1; i++) {
         prev = temp;
         temp = temp -> getNext();
