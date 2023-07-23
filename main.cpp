@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "data_structures/LinkedList/listNode.h"
+#include "data_structures/LinkedList/listNode.hpp"
 #include "utility_functions.h"
 
 // class InvalidOptionException {};

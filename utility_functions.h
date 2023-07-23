@@ -1,8 +1,8 @@
 #pragma once
 #include <iostream>
 
-#include "data_structures/LinkedList/listNode.h"
-#include "data_structures/LinkedList/doubleListNode.h"
+#include "data_structures/LinkedList/listNode.hpp"
+#include "data_structures/LinkedList/doubleListNode.hpp"
 
 // ! Improve code readability with enums for cases, instead of numbers.
 // ! Utitity functions only for linked list as of now, make them generic.

@@ -2,7 +2,8 @@
 #include <iostream>
 #include <limits>
 
-#include "../LinkedList/listNode.h"
+#include "../LinkedList/listNode.hpp"
+#include "../../exceptions/exceptions.hpp"
 
 #define GARBAGE_INT_VALUE INT_MIN
 #define GARBAGE_FLOAT_VALUE std::numeric_limits<float>::min()
@@ -153,10 +154,11 @@ void Stack<std::string>::push(std::string element) {
 }
 
 // Pops an element off the bottom of the stack. Time Complexity: O(1), Space Complexity: O(1).
+// * Throws StackIsEmptyException().
 template <class T>
 T Stack<T>::pop() {
     if (this -> isEmpty()) {
-        // ! throw ERROR.
+        throw StackIsEmptyException();
     }
 
     T data = top -> getData();
@@ -183,9 +185,7 @@ int Stack<T>::getSize() {
 template <class T>
 T Stack<T>::peek(int indexFromLast) {
     if (indexFromLast > this -> getSize() || index < 0) {
-        std::cout << "[ERROR] Invalid index!" << std::endl;
-        // return;
-        // ! NEED TO THROW ERROR.
+        throw InvalidIndexException();
     }
     if (indexFromLast == 0) {
         return this -> bottom -> getData();
